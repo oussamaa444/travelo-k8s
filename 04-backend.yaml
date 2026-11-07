@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: travelo-backend
+  namespace: travelo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: travelo-backend
+  template:
+    metadata:
+      labels:
+        app: travelo-backend
+    spec:
+      containers:
+      - name: backend
+        image: oussama444/travelo-backend:1.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: travelo-config
+        - secretRef:
+            name: travelo-secret
+        resources:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits:
+            cpu: 500m
+            memory: 768Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: travelo-backend
+  namespace: travelo
+spec:
+  type: ClusterIP
+  selector:
+    app: travelo-backend
+  ports:
+  - port: 8080
+    targetPort: 8080
