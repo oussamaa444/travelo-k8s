@@ -60,4 +60,4 @@ spec:
     app: travelo-backend
   ports:
   - port: 8080
-    targetPort: 8080
+    targetPort: 8080SS
