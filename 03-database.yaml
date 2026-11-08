@@ -53,6 +53,23 @@ spec:
           limits:
             cpu: "1"
             memory: 1Gi
+        startupProbe:
+          exec:
+            command: ["sh", "-c", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$MYSQL_ROOT_PASSWORD\""]
+          periodSeconds: 10
+          failureThreshold: 30
+        readinessProbe:
+          exec:
+            command: ["sh", "-c", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$MYSQL_ROOT_PASSWORD\""]
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        livenessProbe:
+          exec:
+            command: ["sh", "-c", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$MYSQL_ROOT_PASSWORD\""]
+          periodSeconds: 20
+          timeoutSeconds: 5
+          failureThreshold: 3
   volumeClaimTemplates:
   - metadata:
       name: sql-data
